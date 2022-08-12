@@ -90,7 +90,6 @@ let data =await content.findById(req.params.id)
 router.delete(
   "/deletedata/:id",
   fetchuser,async (req, res) => {
-   
     try {
   // find the deleteItem to be delete and delete
 let deleteItem  =await content.findById(req.params.id)
@@ -112,7 +111,7 @@ let deleteItem  =await content.findById(req.params.id)
 
 
 
-// 4 discard this content (localhost/content/getData/:id)
+// 4 get this content (localhost/content/getData/:id)
 
 router.get(
   "/getdata/:id",
@@ -122,11 +121,6 @@ router.get(
   // find the deleteItem to be delete and delete
 let getData  =await content.findById(req.params.id)
   if(!getData){return res.status(400).send('data not found')}
-
-  // allow delete only if user own it
-  if(getData.user.toString() !== req.user.id){
-    return res.status(401).send('not allowed')
-  }
 
   res.json({"success":"take the data ", getData:getData})
 } catch (error) {
