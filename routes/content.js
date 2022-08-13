@@ -27,7 +27,7 @@ router.put("/getbygeneraltag", async (req, res) => {
   }
 });  
 
-
+    
 // 2 post in "localhost/content/postdata"the content----------------
 router.post("/postdata",fetchuser,[
     body("projectName", "enter a valid title").isLength({ min: 3 }), // validating
@@ -115,7 +115,7 @@ let deleteItem  =await content.findById(req.params.id)
 
 router.get(
   "/getdata/:id",
-  fetchuser,async (req, res) => {
+  async (req, res) => {
     try {
   // find the deleteItem to be delete and delete
 let getData  =await content.findById(req.params.id)
