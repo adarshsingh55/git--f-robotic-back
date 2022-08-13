@@ -116,12 +116,11 @@ let deleteItem  =await content.findById(req.params.id)
 router.get(
   "/getdata/:id",
   fetchuser,async (req, res) => {
-   
     try {
   // find the deleteItem to be delete and delete
 let getData  =await content.findById(req.params.id)
   if(!getData){return res.status(400).send('data not found')}
-    
+  console.log(getData)
   res.json({"success":"take the data ", getData:getData})
 } catch (error) {
   console.log(error);
