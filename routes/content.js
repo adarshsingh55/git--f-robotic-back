@@ -33,6 +33,7 @@ router.post("/postdata",fetchuser,[
     body("projectName", "enter a valid title").isLength({ min: 3 }), // validating
     body("description", "discription must contain atlist 5 character").isLength({ min: 5 }),
   ],async(req,res)=>{
+    let success = false;
     // a. fountion for adding link 
    try{
       
@@ -46,11 +47,13 @@ router.post("/postdata",fetchuser,[
     const Content = new content({
         projectName, youtubeLink ,description ,sanitizedHtml ,tag,generalTag, user: req.user.id,
     })
-    await Content.save()
-    res.json(Content)
+   let responce = await Content.save()
+   id =responce._id
+    success=true
+    res.json({success,id})
 }catch(error){
     console.log(error);
-    res.json({Error:"some error has occer in saving the content"})
+    res.json({success,Error:"some error has occer in saving the content"})
 }
 })
 // 3 update (localhost/content/updatedata/:id) the content
@@ -60,6 +63,7 @@ router.put(
     body("projectName", "enter a valid title").isLength({ min: 3 }), // validating
     body("description", "discription must contain atlist 5 character").isLength({ min: 5 }),
   ],async (req, res) => {
+    let success = false;
     const { projectName, youtubeLink,description,sanitizedHtml ,tag,generalTag } = req.body;
     try {
     const updated={}; 
@@ -77,10 +81,11 @@ let data =await content.findById(req.params.id)
     return res.status(401).send('not allowed')
   }
   data = await content.findByIdAndUpdate(req.params.id,{$set: updated},{new:true})
-  res.json({data})
+  success=true
+  res.json({success})
 } catch (error) {
   console.log(error);
-  res.status(500).send("some erro has occe in update datas rout");
+  res.status(500).json({success,Error:"some erro has occe in update datas rout"});
 }
   }
   );
@@ -90,6 +95,7 @@ let data =await content.findById(req.params.id)
 router.delete(
   "/deletedata/:id",
   fetchuser,async (req, res) => {
+    let success = false;
     try {
   // find the deleteItem to be delete and delete
 let deleteItem  =await content.findById(req.params.id)
@@ -101,10 +107,11 @@ let deleteItem  =await content.findById(req.params.id)
   }
 
   deleteItem  = await content.findByIdAndDelete(req.params.id)
-  res.json({"success":"data has been deleted",deleteItem :deleteItem})
+  success=true
+  res.json({success})
 } catch (error) {
   console.log(error);
-  res.status(500).send("some erro has occe in Deleteing datas rout");
+  res.status(500).json({success,Error:"some erro has occe in Deleteing datas rout"});
 }
   }
   );
@@ -116,15 +123,17 @@ let deleteItem  =await content.findById(req.params.id)
 router.get(
   "/getdata/:id",
   async (req, res) => {
+    let success = false;
     try {
   // find the deleteItem to be delete and delete
 let getData  =await content.findById(req.params.id)
   if(!getData){return res.status(400).send('data not found')}
   console.log(getData)
-  res.json({"success":"take the data ", getData:getData})
+  success=true
+  res.json({success, getData:getData})
 } catch (error) {
   console.log(error);
-  res.status(500).send("some erro has occe in getdata datas rout");
+  res.status(500).json({success,Error:"some erro has occe in getdata datas rout"});
 }
   }
   );
