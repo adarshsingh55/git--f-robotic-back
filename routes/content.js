@@ -8,8 +8,9 @@ var fetchuser = require("../midleware/fetchuser");
 // 1 get all content (localhost/content/fetchall) of spacific id -----------------------------------------------  
 router.get("/fetchall", fetchuser, async (req, res) => {
   try {
-    const userContent = await content.find({ user: req.user.id }).sort({date :'desc'});
+    const userContent = await content.find({ user: req.user.id },{_id:1,projectName:1,description:1}).sort({date :'desc'});
     res.json(userContent);
+    // res.json({_id:userContent._id,projectName:userContent.projectName,description:userContent.description});
   } catch (error) {
     console.log(error);
     res.status(500).send("some erro has occe in fetchall rout");
@@ -19,7 +20,7 @@ router.get("/fetchall", fetchuser, async (req, res) => {
 //fetch by generalTag name localhost/content/getbygeneraltag
 router.put("/getbygeneraltag", async (req, res) => {
   try {
-    const userContent = await content.find({ generalTag: req.body.generalTag }).sort({date :'desc'});
+    const userContent = await content.find({ generalTag: req.body.generalTag },{_id:1,projectName:1,description:1}).sort({date :'desc'});
     res.json(userContent);
   } catch (error) {
     console.log(error);
