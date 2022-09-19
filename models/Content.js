@@ -29,7 +29,11 @@ const mongoose =require("mongoose")
      sanitizedHtml :{
         type:String,
         requires:true
-    }
+    },
+      blogUrl:{
+        type:String   
+    }  
+    
 })
 
 module.exports=mongoose.model('content',contentSchema)
