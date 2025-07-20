@@ -60,7 +60,7 @@ router.post("/postdata",fetchuser,[
     }
     const {projectName, youtubeLink,description,sanitizedHtml ,tag,generalTag,blogID,bloggerID} = req.body;
     if (blogID) {
-      apikey="AIzaSyAXC2h3OKTH67nkKcY3VWQfU3zb5BF9bv8"
+      apikey="AIzaSyANwrw92sHikocr1RSRK3BHGjl9iotarzc"
       urlBlog=`https://www.googleapis.com/blogger/v3/blogs/${bloggerID}/posts/${blogID}?key=${apikey}`
       const Content = new content({
         projectName, youtubeLink ,description ,sanitizedHtml ,tag,generalTag, user: req.user.id,blogUrl:urlBlog
@@ -105,9 +105,12 @@ router.put(
     if(youtubeLink){updated.youtubeLink = youtubeLink}
     if(sanitizedHtml){updated.sanitizedHtml = sanitizedHtml}
     if(generalTag){updated.generalTag = generalTag}
-    if(blogID){updated.blogID=blogID}
-    if(bloggerID){updated.bloggerID=bloggerID}
-  
+    if (blogID) {
+      apikey="AIzaSyANwrw92sHikocr1RSRK3BHGjl9iotarzc";
+      urlBlog=`https://www.googleapis.com/blogger/v3/blogs/${bloggerID}/posts/${blogID}?key=${apikey}`;
+      updated.blogUrl=urlBlog;
+    }
+  console.log(updated);
   // find the data to be update
 let data =await content.findById(req.params.id)
   if(!data){ return res.status(400).send('data not found')}
@@ -161,7 +164,7 @@ router.get(
     try {
   // find the deleteItem to be delete and delete
 let getData  =await content.findById(req.params.id)
-
+console.log(getData);
 
   if(!getData){return res.status(400).send('data not found')}
   console.log(getData)
@@ -174,7 +177,8 @@ let getData  =await content.findById(req.params.id)
       await request({url:Rurl,json:true},(err,responce,body)=>{
         // console.log(body);
         const content=body.content
-        // console.log(content);
+
+        console.log(content);
         // console.log(content);
         const {user,projectName,youtubeLink,description,generalTag,tag,blogID,bloggerID,_id,date}=getData
         success=true
